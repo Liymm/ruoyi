@@ -112,7 +112,7 @@ public class Constants
     /**
      * 资源映射路径 前缀
      */
-    public static final String RESOURCE_PREFIX = "/profile";
+    public static final String RESOURCE_PREFIX = "/home/images/Spark/20726/demo-spark/equipment";
 
     /**
      * RMI 远程方法调用

@@ -35,7 +35,7 @@
       append-to-body
     >
       <img
-        :src="dialogImageUrl"
+        :src="'http://127.0.0.1:8080'+dialogImageUrl"
         style="display: block; max-width: 100%; margin: 0 auto"
       />
     </el-dialog>

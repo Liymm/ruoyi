@@ -1,12 +1,12 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">Spark后台管理系统</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
-          type="text"
           auto-complete="off"
+          type="text"
           placeholder="账号"
         >
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
@@ -16,8 +16,8 @@
         <el-input
           v-model="loginForm.password"
           type="password"
-          auto-complete="off"
           placeholder="密码"
+          auto-complete="new-password"
           @keyup.enter.native="handleLogin"
         >
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
@@ -28,7 +28,7 @@
           v-model="loginForm.code"
           auto-complete="off"
           placeholder="验证码"
-          style="width: 63%"
+          style="width: 63%;"
           @keyup.enter.native="handleLogin"
         >
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
@@ -37,12 +37,13 @@
           <img :src="codeUrl" @click="getCode" class="login-code-img"/>
         </div>
       </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+      
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
           size="medium"
           type="primary"
+          auto-complete="off"
           style="width:100%;"
           @click.native.prevent="handleLogin"
         >
@@ -72,8 +73,8 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
         rememberMe: false,
         code: "",
         uuid: ""

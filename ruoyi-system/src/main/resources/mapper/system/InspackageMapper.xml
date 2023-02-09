@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.InspackageMapper">
+    
+    <resultMap type="Inspackage" id="InspackageResult">
+        <result property="packageId"    column="package_id"    />
+        <result property="projectNum"    column="project_num"    />
+        <result property="versionNum"    column="version_num"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="virtualPath"    column="virtual_path"    />
+        <result property="content"    column="content"    />
+        <result property="type"    column="type"    />
+        <result property="creatDate"    column="creat_date"    />
+        <result property="conditionNum"    column="condition_num"    />
+    </resultMap>
+
+    <sql id="selectInspackageVo">
+        select package_id, project_num, version_num, file_name, virtual_path, content, type, creat_date, condition_num from inspackage
+    </sql>
+
+    <select id="selectInspackageList" parameterType="Inspackage" resultMap="InspackageResult">
+        <include refid="selectInspackageVo"/>
+        <where>  
+            <if test="projectNum != null  and projectNum != ''"> and project_num = #{projectNum}</if>
+            <if test="versionNum != null  and versionNum != ''"> and version_num = #{versionNum}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="virtualPath != null  and virtualPath != ''"> and virtual_path = #{virtualPath}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="creatDate != null "> and creat_date = #{creatDate}</if>
+            <if test="conditionNum != null "> and condition_num = #{conditionNum}</if>
+        </where>
+    </select>
+    
+    <select id="selectInspackageByPackageId" parameterType="Long" resultMap="InspackageResult">
+        <include refid="selectInspackageVo"/>
+        where package_id = #{packageId}
+    </select>
+        
+    <insert id="insertInspackage" parameterType="Inspackage" useGeneratedKeys="true" keyProperty="packageId">
+        insert into inspackage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectNum != null and projectNum != ''">project_num,</if>
+            <if test="versionNum != null">version_num,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="virtualPath != null">virtual_path,</if>
+            <if test="content != null">content,</if>
+            <if test="type != null">type,</if>
+            <if test="creatDate != null">creat_date,</if>
+            <if test="conditionNum != null">condition_num,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectNum != null and projectNum != ''">#{projectNum},</if>
+            <if test="versionNum != null">#{versionNum},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="virtualPath != null">#{virtualPath},</if>
+            <if test="content != null">#{content},</if>
+            <if test="type != null">#{type},</if>
+            <if test="creatDate != null">#{creatDate},</if>
+            <if test="conditionNum != null">#{conditionNum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInspackage" parameterType="Inspackage">
+        update inspackage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectNum != null and projectNum != ''">project_num = #{projectNum},</if>
+            <if test="versionNum != null">version_num = #{versionNum},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="virtualPath != null">virtual_path = #{virtualPath},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="creatDate != null">creat_date = #{creatDate},</if>
+            <if test="conditionNum != null">condition_num = #{conditionNum},</if>
+        </trim>
+        where package_id = #{packageId}
+    </update>
+
+    <delete id="deleteInspackageByPackageId" parameterType="Long">
+        delete from inspackage where package_id = #{packageId}
+    </delete>
+
+    <delete id="deleteInspackageByPackageIds" parameterType="String">
+        delete from inspackage where package_id in 
+        <foreach item="packageId" collection="array" open="(" separator="," close=")">
+            #{packageId}
+        </foreach>
+    </delete>
+</mapper>

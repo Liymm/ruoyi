@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.FeedbackMapper">
+    
+    <resultMap type="Feedback" id="FeedbackResult">
+        <result property="fid"    column="fid"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="clientType"    column="client_Type"    />
+        <result property="appVersion"    column="app_version"    />
+        <result property="content"    column="content"    />
+        <result property="filePaths"    column="file_paths"    />
+        <result property="issueTime"    column="issue_time"    />
+        <result property="phoneModel"    column="phone_Model"    />
+    </resultMap>
+
+    <sql id="selectFeedbackVo">
+        select fid, uuid, client_Type, app_version, content, file_paths, issue_time, phone_Model from feedback
+    </sql>
+
+    <select id="selectFeedbackList" parameterType="Feedback" resultMap="FeedbackResult">
+        <include refid="selectFeedbackVo"/>
+        <where>  
+            <if test="fid != null "> and fid = #{fid}</if>
+            <if test="uuid != null "> and uuid = #{uuid}</if>
+            <if test="clientType != null  and clientType != ''"> and client_Type = #{clientType}</if>
+            <if test="appVersion != null  and appVersion != ''"> and app_version = #{appVersion}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="filePaths != null  and filePaths != ''"> and file_paths = #{filePaths}</if>
+            <if test="issueTime != null  and issueTime != ''"> and issue_time = #{issueTime}</if>
+            <if test="phoneModel != null  and phoneModel != ''"> and phone_Model = #{phoneModel}</if>
+        </where>
+    </select>
+    
+    <select id="selectFeedbackByFid" parameterType="Long" resultMap="FeedbackResult">
+        <include refid="selectFeedbackVo"/>
+        where fid = #{fid}
+    </select>
+        
+    <insert id="insertFeedback" parameterType="Feedback" useGeneratedKeys="true" keyProperty="fid">
+        insert into feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">uuid,</if>
+            <if test="clientType != null">client_Type,</if>
+            <if test="appVersion != null">app_version,</if>
+            <if test="content != null">content,</if>
+            <if test="filePaths != null">file_paths,</if>
+            <if test="issueTime != null">issue_time,</if>
+            <if test="phoneModel != null">phone_Model,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">#{uuid},</if>
+            <if test="clientType != null">#{clientType},</if>
+            <if test="appVersion != null">#{appVersion},</if>
+            <if test="content != null">#{content},</if>
+            <if test="filePaths != null">#{filePaths},</if>
+            <if test="issueTime != null">#{issueTime},</if>
+            <if test="phoneModel != null">#{phoneModel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFeedback" parameterType="Feedback">
+        update feedback
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="clientType != null">client_Type = #{clientType},</if>
+            <if test="appVersion != null">app_version = #{appVersion},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="filePaths != null">file_paths = #{filePaths},</if>
+            <if test="issueTime != null">issue_time = #{issueTime},</if>
+            <if test="phoneModel != null">phone_Model = #{phoneModel},</if>
+        </trim>
+        where fid = #{fid}
+    </update>
+
+    <delete id="deleteFeedbackByFid" parameterType="Long">
+        delete from feedback where fid = #{fid}
+    </delete>
+
+    <delete id="deleteFeedbackByFids" parameterType="String">
+        delete from feedback where fid in 
+        <foreach item="fid" collection="array" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </delete>
+</mapper>

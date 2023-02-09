@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.UserMapper">
+    
+    <resultMap type="User" id="UserResult">
+        <result property="uid"    column="uid"    />
+        <result property="userName"    column="user_name"    />
+        <result property="sex"    column="sex"    />
+        <result property="height"    column="height"    />
+        <result property="weight"    column="weight"    />
+        <result property="birthdate"    column="birthdate"    />
+        <result property="userPhoto"    column="user_photo"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectUserVo">
+        select uid, user_name, sex, height, weight, birthdate, user_photo, address from user
+    </sql>
+
+    <select id="selectUserList" parameterType="User" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        <where>  
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="sex != null "> and sex = #{sex}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="birthdate != null  and birthdate != ''"> and birthdate = #{birthdate}</if>
+            <if test="userPhoto != null  and userPhoto != ''"> and user_photo = #{userPhoto}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserByUid" parameterType="Long" resultMap="UserResult">
+        <include refid="selectUserVo"/>
+        where uid = #{uid}
+    </select>
+        
+    <insert id="insertUser" parameterType="User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="sex != null">sex,</if>
+            <if test="height != null">height,</if>
+            <if test="weight != null">weight,</if>
+            <if test="birthdate != null">birthdate,</if>
+            <if test="userPhoto != null">user_photo,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="height != null">#{height},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="birthdate != null">#{birthdate},</if>
+            <if test="userPhoto != null">#{userPhoto},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="birthdate != null">birthdate = #{birthdate},</if>
+            <if test="userPhoto != null">user_photo = #{userPhoto},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where uid = #{uid}
+    </update>
+
+    <delete id="deleteUserByUid" parameterType="Long">
+        delete from user where uid = #{uid}
+    </delete>
+
+    <delete id="deleteUserByUids" parameterType="String">
+        delete from user where uid in 
+        <foreach item="uid" collection="array" open="(" separator="," close=")">
+            #{uid}
+        </foreach>
+    </delete>
+</mapper>

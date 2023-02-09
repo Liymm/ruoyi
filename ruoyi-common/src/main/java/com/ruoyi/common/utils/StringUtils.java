@@ -301,7 +301,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         {
             return list;
         }
-
         // 过滤空白字符串
         if (filterBlank && StringUtils.isBlank(str))
         {

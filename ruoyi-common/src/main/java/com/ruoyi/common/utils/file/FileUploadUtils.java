@@ -112,6 +112,8 @@ public class FileUploadUtils
 
         String fileName = extractFilename(file);
 
+        System.out.println("baseDir:"+baseDir);
+
         String absPath = getAbsoluteFile(baseDir, fileName).getAbsolutePath();
         file.transferTo(Paths.get(absPath));
         return getPathFileName(baseDir, fileName);
@@ -122,12 +124,13 @@ public class FileUploadUtils
      */
     public static final String extractFilename(MultipartFile file)
     {
-        return StringUtils.format("{}/{}_{}.{}", DateUtils.datePath(),
+        return StringUtils.format("{}_{}.{}",
                 FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType), getExtension(file));
     }
 
     public static final File getAbsoluteFile(String uploadDir, String fileName) throws IOException
     {
+
         File desc = new File(uploadDir + File.separator + fileName);
 
         if (!desc.exists())
@@ -165,6 +168,7 @@ public class FileUploadUtils
         }
 
         String fileName = file.getOriginalFilename();
+        System.out.println("fileName:"+fileName);
         String extension = getExtension(file);
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension))
         {

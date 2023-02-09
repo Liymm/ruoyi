@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ProductMapper">
+    
+    <resultMap type="Product" id="ProductResult">
+        <result property="id"    column="id"    />
+        <result property="proId"    column="pro_id"    />
+        <result property="proName"    column="pro_name"    />
+        <result property="proImg"    column="pro_img"    />
+        <result property="proListName"    column="pro_list_name"    />
+    </resultMap>
+
+    <sql id="selectProductVo">
+        select id, pro_id, pro_name, pro_img, pro_list_name from product
+    </sql>
+
+    <select id="selectProductList" parameterType="Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>  
+            <if test="proId != null "> and pro_id = #{proId}</if>
+            <if test="proName != null  and proName != ''"> and pro_name like concat('%', #{proName}, '%')</if>
+            <if test="proImg != null  and proImg != ''"> and pro_img = #{proImg}</if>
+            <if test="proListName != null  and proListName != ''"> and pro_list_name like concat('%', #{proListName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectProductById" parameterType="Long" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proId != null">pro_id,</if>
+            <if test="proName != null">pro_name,</if>
+            <if test="proImg != null">pro_img,</if>
+            <if test="proListName != null">pro_list_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proId != null">#{proId},</if>
+            <if test="proName != null">#{proName},</if>
+            <if test="proImg != null">#{proImg},</if>
+            <if test="proListName != null">#{proListName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProduct" parameterType="Product">
+        update product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proId != null">pro_id = #{proId},</if>
+            <if test="proName != null">pro_name = #{proName},</if>
+            <if test="proImg != null">pro_img = #{proImg},</if>
+            <if test="proListName != null">pro_list_name = #{proListName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductById" parameterType="Long">
+        delete from product where id = #{id}
+    </delete>
+
+    <delete id="deleteProductByIds" parameterType="String">
+        delete from product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ProductInfoMapper">
+    
+    <resultMap type="ProductInfo" id="ProductInfoResult">
+        <result property="ppid"    column="ppid"    />
+        <result property="id"    column="id"    />
+        <result property="pid"    column="pid"    />
+        <result property="name"    column="name"    />
+        <result property="info"    column="info"    />
+        <result property="img"    column="img"    />
+        <result property="filterType"    column="filter_type"    />
+        <result property="filterValue"    column="filter_value"    />
+        <result property="deviceAbility"    column="device_ability"    />
+    </resultMap>
+
+    <sql id="selectProductInfoVo">
+        select ppid, id, pid, name, info, img, filter_type, filter_value, device_ability from product_info
+    </sql>
+
+    <select id="selectProductInfoList" parameterType="ProductInfo" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        <where>  
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+            <if test="pid != null "> and pid = #{pid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="info != null  and info != ''"> and info = #{info}</if>
+            <if test="img != null  and img != ''"> and img = #{img}</if>
+            <if test="filterType != null  and filterType != ''"> and filter_type = #{filterType}</if>
+            <if test="filterValue != null  and filterValue != ''"> and filter_value = #{filterValue}</if>
+            <if test="deviceAbility != null  and deviceAbility != ''"> and device_ability = #{deviceAbility}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductInfoByPpid" parameterType="Long" resultMap="ProductInfoResult">
+        <include refid="selectProductInfoVo"/>
+        where ppid = #{ppid}
+    </select>
+        
+    <insert id="insertProductInfo" parameterType="ProductInfo" useGeneratedKeys="true" keyProperty="ppid">
+        insert into product_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pid != null">pid,</if>
+            <if test="name != null">name,</if>
+            <if test="info != null">info,</if>
+            <if test="img != null">img,</if>
+            <if test="filterType != null">filter_type,</if>
+            <if test="filterValue != null">filter_value,</if>
+            <if test="deviceAbility != null">device_ability,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="name != null">#{name},</if>
+            <if test="info != null">#{info},</if>
+            <if test="img != null">#{img},</if>
+            <if test="filterType != null">#{filterType},</if>
+            <if test="filterValue != null">#{filterValue},</if>
+            <if test="deviceAbility != null">#{deviceAbility},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductInfo" parameterType="ProductInfo">
+        update product_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id = #{id},</if>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="info != null">info = #{info},</if>
+            <if test="img != null">img = #{img},</if>
+            <if test="filterType != null">filter_type = #{filterType},</if>
+            <if test="filterValue != null">filter_value = #{filterValue},</if>
+            <if test="deviceAbility != null">device_ability = #{deviceAbility},</if>
+        </trim>
+        where ppid = #{ppid}
+    </update>
+
+    <delete id="deleteProductInfoByPpid" parameterType="Long">
+        delete from product_info where ppid = #{ppid}
+    </delete>
+
+    <delete id="deleteProductInfoByPpids" parameterType="String">
+        delete from product_info where ppid in 
+        <foreach item="ppid" collection="array" open="(" separator="," close=")">
+            #{ppid}
+        </foreach>
+    </delete>
+</mapper>

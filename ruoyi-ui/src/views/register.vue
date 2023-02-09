@@ -1,9 +1,9 @@
 <template>
   <div class="register">
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">若依后台管理系统</h3>
+      <h3 class="title">Spark后台管理系统</h3>
       <el-form-item prop="username">
-        <el-input v-model="registerForm.username" type="text" auto-complete="off" placeholder="账号">
+        <el-input v-model="registerForm.username" type="text"  placeholder="账号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
@@ -11,10 +11,11 @@
         <el-input
           v-model="registerForm.password"
           type="password"
-          auto-complete="off"
+          
           placeholder="密码"
           @keyup.enter.native="handleRegister"
         >
+        <!-- auto-complete="off" -->
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
@@ -22,7 +23,7 @@
         <el-input
           v-model="registerForm.confirmPassword"
           type="password"
-          auto-complete="off"
+          
           placeholder="确认密码"
           @keyup.enter.native="handleRegister"
         >
@@ -32,7 +33,7 @@
       <el-form-item prop="code" v-if="captchaEnabled">
         <el-input
           v-model="registerForm.code"
-          auto-complete="off"
+          
           placeholder="验证码"
           style="width: 63%"
           @keyup.enter.native="handleRegister"
@@ -61,7 +62,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-register-footer">
-      <span>Copyright © 2018-2022 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © Spark All Rights Reserved.</span>
     </div>
   </div>
 </template>
